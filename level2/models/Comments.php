@@ -8,7 +8,7 @@ class Comments extends Model
     public $user_id;
     public $text;
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'comments';
     }

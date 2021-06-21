@@ -12,7 +12,7 @@ class Order extends Model
     public $product_id;
     public $status;
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'orders';
     }

@@ -11,7 +11,7 @@ class Basket extends Model
     public $count;
     public $price;
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'basket';
     }

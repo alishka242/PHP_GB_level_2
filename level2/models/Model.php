@@ -7,49 +7,59 @@ use app\engine\Db;
 
 abstract class Model implements IModel
 {
-    protected $db;
+    abstract static protected function getTableName();
 
-    abstract protected function getTableName();
-
-    public function __construct(Db $db)
+    public static function getOne($id)
     {
-        $this->db = $db;
-    }
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE id = :id";
 
-
-    public function getOne($id)
-    {
-        $sql = "SELECT * FROM {$this->getTableName()} WHERE id = {$id}";
-
-        echo $this->db->queryOne($sql);
+        return DB::getInstance()->queryOneObject($sql, ['id' => $id], static::class);
     }
     public function getAll()
     {
-        $sql = "SELECT * FROM {$this->getTableName()}";
-
-        echo $this->db->queryAll($sql);
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName}";
+        return DB::getInstance()->queryAll($sql);
     }
 
     // нужно еще подумать над реализацией другиз таблиц, ведь колонки будут разные. 
-    public function insert($value1, $value2, $value3)
+    public function insert()
     {
-        $sql = "INSERT INTO {$this->getTableName()} (id, `login`, pass) VALUES ($value1, '{$value2}', '{$value3}')";
+        $params = [];
+        $columns = [];
 
-        echo $this->db->executeQuery($sql);
+        foreach ($this as $key => $value) {
+            if ($key == 'id') continue;
+            $params[":{$key}"] = $value;
+            $columns[] = $key;
+        }
+
+        $columns = implode(', ', $columns);
+        $value = implode(', ', array_keys($params));
+        $tableName = static::getTableName();
+
+        $sql = "INSERT INTO `{$tableName}` ({$columns}) VALUES ({$value})";
+
+        DB::getInstance()->execute($sql, $params);
+        $this->id = DB::getInstance()->lastInsertId();
+        return $this;
     }
 
     // нужно еще подумать над реализацией другиз таблиц, ведь колонки будут разные. 
-    public function update($value1, $value2, $value3, $value4, $value5, $id)
+    public function update()
     {
-        $sql = "UPDATE {$this->getTableName()} SET ($value1, {$value2}, '{$value3}', {$value4}, {$value5}) WHERE id = {$id}";
+        $tableName = static::getTableName();
+        $sql = "UPDATE {$tableName} SET () WHERE id = ";
 
-        echo $this->db->executeQuery($sql);
+        return DB::getInstance()->execute($sql);
     }
 
-    public function delete($id)
+    public function delete()
     {
-        $sql = "DELETE FROM {$this->getTableName()} WHERE id = {$id}";
+        $tableName = static::getTableName();
+        $sql = "DELETE FROM `{$tableName}` WHERE id = :id";
 
-        echo $this->db->executeQuery($sql);
+        return Db::getInstance()->execute($sql, ['id' => $this->id]);
     }
 }
