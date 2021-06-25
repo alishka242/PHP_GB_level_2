@@ -1,18 +1,33 @@
 <?php
 
 use app\models\{Product, User, Basket};
-use app\engine\{Db, Autoload};
-use app\interfaces\IModel;
+use app\engine\{Autoload};
 
 include "../config/config.php";
 include ROOT . "/engine/Autoload.php";
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-$product = Product::getOne(7);
-$product->delete();
-var_dump($product);
+$controllerName = $_GET['c'] ?: 'product';
+$actionName = $_GET['a'];
 
-// $product = new Product('Книга', 3, 'book.phg', 'Самая интересная книга', 454);
-// $product->insert();
-// var_dump($product);
+$controllerClass = CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
+
+if (class_exists($controllerClass)) {
+    $controller = new $controllerClass();
+    $controller->runAction($actionName);
+} else echo '404';
+
+//UPDATE
+// $product = Product::getOne(7);
+// $product->price = 23;
+// $product->save();
+
+//INSERT GET
+// $product = new Product('Книга', 3, 'book.png', 'Самая интересная книга', 454);
+// $product->save();
+
+
+//DELETE
+// $product = Product::getOne(7);
+// $product->delete();

@@ -2,10 +2,13 @@
 
 namespace app\models;
 
-class ProductCategory extends Model
+class ProductCategory extends DBModel
 {
-    public $id;
-    public $name;
+    protected $name;
+
+    protected $props = [
+        'name' => false
+    ];
 
     public static function getTableName()
     {

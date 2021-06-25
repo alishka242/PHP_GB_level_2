@@ -2,8 +2,7 @@
 
 namespace app\traits;
 
-
-use app\engine\Db;
+// use app\engine\Db;
 
 trait TSinletone
 {

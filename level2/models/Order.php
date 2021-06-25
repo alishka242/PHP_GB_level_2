@@ -2,15 +2,23 @@
 
 namespace app\models;
 
-class Order extends Model
+class Order extends DBModel
 {
-    public $id;
-    public $userName;
-    public $phone;
-    public $email;
-    public $session_id;
-    public $product_id;
-    public $status;
+    protected $userName;
+    protected $phone;
+    protected $email;
+    protected $session_id;
+    protected $product_id;
+    protected $status;
+
+    protected $props = [
+        'userName' => false,
+        'phone' => false,
+        'email' => false,
+        'session_id' => false,
+        'product_id' => false,
+        'status' => false
+    ];
 
     public static function getTableName()
     {

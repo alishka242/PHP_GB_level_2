@@ -2,14 +2,26 @@
 
 namespace app\models;
 
-class Basket extends Model
+class Basket extends DBModel
 {
-    public $id;
-    public $user_id;
-    public $product_id;
-    public $session_id;
-    public $count;
-    public $price;
+    protected $user_id;
+    protected $product_id;
+    protected $session_id;
+    protected $count;
+    protected $price;
+
+    protected $props = [
+        'user_id' => false,
+        'product_id' => false,
+        'session_id' => false,
+        'count' => false,
+        'price' => false
+    ];
+
+    public static function getBasket()
+    {
+        
+    }
 
     public static function getTableName()
     {

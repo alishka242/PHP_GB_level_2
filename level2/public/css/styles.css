@@ -1,0 +1,348 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    height: 100%;
+}
+
+.wrapper {
+    margin: 0 auto;
+    max-width: 1145;
+    min-height: 100%;
+    padding-bottom: 40px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 50px;
+    background-color: rgb(36, 36, 36);
+    color: rgb(209, 206, 192);
+}
+
+.header p {
+    padding: 5px 15px;
+    font-size: 20px;
+}
+
+.header a {
+    color: rgb(209, 206, 192);
+    padding-left: 5px;
+}
+
+.header div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px 15px;
+}
+
+.header form {
+    padding: 5px 15px;
+}
+
+.singInOrReg a {
+    padding: 5px;
+    margin: 10px;
+    border: 1px solid #cdc5b1;
+}
+
+.singInOrReg a:hover {
+    color: rgb(138, 138, 138);
+    background-color: white;
+}
+
+.singIn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    width: 500px;
+    height: 200px;
+    justify-content: space-around;
+}
+
+.singIn form {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 150px;
+    justify-content: space-around;
+}
+
+
+.reg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    width: 500px;
+    height: 200px;
+    justify-content: space-evenly;
+}
+
+.reg form {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 150px;
+    justify-content: space-around;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background-color: rgb(209, 206, 192);
+}
+
+a {
+    text-decoration: none;
+    color: rgb(36, 36, 36);
+    font-size: 16px;
+}
+
+nav a {
+    font-weight: bold;
+}
+
+a:hover {
+    color: rgb(138, 138, 138);
+}
+
+li {
+    list-style-type: none;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 60px;
+}
+
+nav ul li {
+    padding: 10px 15px;
+}
+
+nav ul li ul li {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 15px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.catalogPage {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.catalogPage div {
+    background-color: rgb(221, 216, 200);
+    text-align: center;
+    margin: 10px;
+    padding: 5px;
+    width: 200px;    
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.product img {
+    width: 400px;
+    margin: 10px;
+}
+
+.product button {
+    padding: 5px;
+    font-size: 16px;
+    background: crimson;
+}
+
+.product p {
+    font-size: 18px;
+}
+
+.product .productPrice {
+    font-size: 24px;
+    margin: 15px;
+}
+
+.index {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.index img {
+    width: 900px;
+    margin: 10px;
+}
+
+.aboutUs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.aboutUs p {
+    font-size: 20px;
+}
+
+.aboutUs img {
+    width: 700px;
+    margin: 10px;
+}
+
+.photoGallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.photoGallery img {
+    margin: 5px;
+}
+
+.formGallery {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.newsLine {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.commentDiv {
+    margin: 15px;
+    padding: 3px;
+    min-width: 350px;
+    background-color: rgb(235, 222, 170);
+}
+
+.commentDiv a {
+    font-size: 13px;
+    color: grey;
+}
+
+.formComments {
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+
+.formComments input {
+    margin: 10px 0;
+    max-width: 450px;
+    align-items: center;
+}
+
+.bntFormComm {
+    width: 150px;
+}
+
+.basket {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 10px 0;
+    width: 70%;
+}
+
+.basketItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgb(224, 223, 210);
+    min-width: 400px;
+    padding: 10px 10px;
+    margin: 10px 0;
+}
+
+.basketItemInfo {
+    min-width: 200px;
+    padding: 0 20px;
+    background: rgb(224, 223, 210);
+}
+
+.order {
+    border: 1px solid black;
+    padding: 15px;
+}
+
+.order h2 {
+    margin-bottom: 25px;
+}
+
+.orderForm {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    /* justify-content: space-around; */
+}
+
+.orderForm input{
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.ordersAdmin{
+background-color: rgb(235, 227, 207);
+padding: 15px;
+}
+
+.orderInfoAdmin{
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid rgb(168, 168, 168);
+}
+
+.orderStatus{
+    background-color: greenyellow;
+}
+
+.orderSess{
+    background-color: indianred;
+}
+
+footer {
+    height: 40px;
+    margin-top: -40px;
+    background-color: rgb(36, 36, 36);
+    color: rgb(209, 206, 192);
+    padding: 10px 0;
+    width: 100%;
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer p {
+    padding: 0 20px;
+}

@@ -2,12 +2,16 @@
 
 namespace app\models;
 
-class User extends Model
+class User extends DBModel
 {
-    public $id;
-    public $login;
-    public $pass;
-    public $cokie;
+    protected $login;
+    protected $pass;
+    protected $cokie;
+
+    protected $props = [
+        'login' => false,
+        'pass' => false
+    ];
 
     public function __construct($login = null, $pass = null, $cokie = null)
     {

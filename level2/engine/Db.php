@@ -57,6 +57,16 @@ class Db
         return $stmt;
     }
 
+    public function queryLimit($sql, $limit)
+    {
+        //LIMIT 0, $limit
+        var_dump($sql, $limit);
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindValue(1, $limit, \PDO::PARAM_INT);
+        //$stmt->execute($params);
+        return []; //todo верни результат
+    }
+
     public function queryOneObject($sql, $params, $class)
     {
         $stmt = $this->query($sql, $params);

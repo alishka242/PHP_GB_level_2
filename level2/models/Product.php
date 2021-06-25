@@ -2,15 +2,22 @@
 
 namespace app\models;
 
-class Product extends Model
+class Product extends DBModel
 {
-    public $id;
-    public $name;
-    public $category_id;
-    public $img_name;
-    public $description;
-    public $price;
+    protected $name;
+    protected $category_id;
+    protected $img_name;
+    protected $description;
+    protected $price;
     // public $createdAt; - почему-то с этой строкой не добавляет новую строку в таблицу при insert.
+
+    protected $props = [
+        'name' => false,
+        'category_id' => false,
+        'img_name' => false,
+        'description' => false,
+        'price' => false
+    ];
 
     public function __construct($name = null, $category_id = null, $img_name = null, $description = null, $price = null)
     {

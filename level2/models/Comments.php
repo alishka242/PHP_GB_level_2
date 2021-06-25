@@ -2,11 +2,15 @@
 
 namespace app\models;
 
-class Comments extends Model
+class Comments extends DBModel
 {
-    public $id;
-    public $user_id;
-    public $text;
+    protected $user_id;
+    protected $text;
+
+    protected $props = [
+        'user_id' => false,
+        'text' => false
+    ];
 
     public static function getTableName()
     {
