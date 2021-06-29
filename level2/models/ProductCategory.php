@@ -4,6 +4,7 @@ namespace app\models;
 
 class ProductCategory extends DBModel
 {
+    protected $id;
     protected $name;
 
     protected $props = [

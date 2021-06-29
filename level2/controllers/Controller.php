@@ -2,13 +2,23 @@
 
 namespace app\controllers;
 
-class Controller
+use app\engine\Render;
+use app\engine\TwigRender;
+use app\interfaces\IRenderer;
+
+abstract class Controller
 {
-    private $layout = 'main';
-    private $useLayout = true;
     private $action;
     private $defaultAction = 'index';
+    private $layout = 'main';
+    private $useLayout = true;
+ 
+    private $render;
 
+    public function __construct(IRenderer $render)
+    {
+        $this->render = new Render($render);
+    }
 
     public function runAction($action)
     {
@@ -21,12 +31,7 @@ class Controller
         }
     }
 
-    public function actionIndex()
-    {
-        echo $this->render('index');
-    }
-
-    public function render($template, $params = [])
+    protected function render($template, $params = [])
     {
         if ($this->useLayout) {
             return $this->renderTemplate("layouts/{$this->layout}", [
@@ -42,14 +47,6 @@ class Controller
 
     protected function renderTemplate($template, $params = [])
     {
-        ob_start();
-        extract($params);
-        $templatePath = VIEWS_DIR . $template . '.php';
-        if (file_exists($templatePath)) {
-            include $templatePath;
-            return ob_get_clean();
-        } else {
-            die('view is not exists');
-        }
+        return $this->render->renderTemplate($template, $params);
     }
 }

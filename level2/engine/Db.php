@@ -54,17 +54,17 @@ class Db
     {
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute($params);
+        
         return $stmt;
     }
 
     public function queryLimit($sql, $limit)
     {
         //LIMIT 0, $limit
-        var_dump($sql, $limit);
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue(1, $limit, \PDO::PARAM_INT);
-        //$stmt->execute($params);
-        return []; //todo верни результат
+        $stmt->execute();
+        return $stmt->fetchAll(); 
     }
 
     public function queryOneObject($sql, $params, $class)

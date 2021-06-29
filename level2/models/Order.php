@@ -4,6 +4,7 @@ namespace app\models;
 
 class Order extends DBModel
 {
+    protected $id;
     protected $userName;
     protected $phone;
     protected $email;

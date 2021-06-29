@@ -4,12 +4,13 @@ namespace app\models;
 
 class Product extends DBModel
 {
+    protected $id;
     protected $name;
     protected $category_id;
     protected $img_name;
     protected $description;
     protected $price;
-    // public $createdAt; - почему-то с этой строкой не добавляет новую строку в таблицу при insert.
+    protected $createdAt;
 
     protected $props = [
         'name' => false,
@@ -19,13 +20,14 @@ class Product extends DBModel
         'price' => false
     ];
 
-    public function __construct($name = null, $category_id = null, $img_name = null, $description = null, $price = null)
+    public function __construct($name = null, $category_id = null, $img_name = null, $description = null, $price = null, $createdAt = null)
     {
         $this->name = $name;
         $this->category_id = $category_id;
         $this->img_name = $img_name;
         $this->description = $description;
         $this->price = $price;
+        $this->createdAt = $createdAt;
     }
 
     protected static function getTableName()

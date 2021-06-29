@@ -4,6 +4,7 @@ namespace app\models;
 
 class User extends DBModel
 {
+    protected $id;
     protected $login;
     protected $pass;
     protected $cokie;

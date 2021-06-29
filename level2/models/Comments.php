@@ -4,6 +4,7 @@ namespace app\models;
 
 class Comments extends DBModel
 {
+    protected $id;
     protected $user_id;
     protected $text;
 

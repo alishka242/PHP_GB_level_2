@@ -6,16 +6,49 @@ use app\engine\Db;
 
 abstract class DBModel extends Model {
 
-    public $id;
-
     abstract protected static function getTableName();
 
     public static function getLimit($limit)
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
-        var_dump($limit);
+        
         return Db::getInstance()->queryLimit($sql, $limit);
+    }
+
+    public static function getWhere($column, $value)
+    {
+        $sql = " WHERE `{$column}` = {$value}";
+        return $sql;
+    }
+
+    // public function where($column, $value)
+    // {
+    //     $this->wheres[] = [
+    //         'column' => $column,
+    //         'value' => $value,
+    //     ];
+    //     return $this;
+    // }
+
+    // public function andWhere($column, $value)
+    // {
+    //     return $this->where($column, $value);
+    // }
+
+    public static function getCount()
+    {
+        //получить кол-во
+    }
+
+    public static function getSumm()
+    {
+        //получить сумму
+    }
+
+    public static function getJoin()
+    {
+        # code...
     }
 
     public static function getOne($id)
@@ -25,10 +58,13 @@ abstract class DBModel extends Model {
 
         return DB::getInstance()->queryOneObject($sql, ['id' => $id], static::class);
     }
-    public static function getAll()
+    public static function getAll($where = null)
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName}";
+        if($where != null){
+            $sql .= $where;
+        }
         return DB::getInstance()->queryAll($sql);
     }
 
@@ -53,16 +89,23 @@ abstract class DBModel extends Model {
         return $this;
     }
 
-    // нужно еще подумать над реализацией другиз таблиц, ведь колонки будут разные. 
     protected function update()
     {
         $params = [];
         $columns = [];
 
+        foreach ($this->props as $key => $value) {
+            if(!$value) continue;
+            $params["{$key}"] = $this->$key;
+            $columns[] .= "`{$key}` = :{$key}";
+            $this->props[$key] = false;
+        }
+
+        $columns = implode(", ", $columns);
         $tableName = static::getTableName();
         $params['id'] = $this->id;
-        $sql = "UPDATE {$tableName} SET ($columns) WHERE id = :id";
-
+        $sql = "UPDATE `{$tableName}` SET {$columns} WHERE id = :id";
+        var_dump($sql);
         return DB::getInstance()->execute($sql, $params);
     }
 

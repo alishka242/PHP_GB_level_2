@@ -10,7 +10,7 @@ abstract class Model implements IModel
 
     public function __set($name, $value)
     {
-        //TODO проверить существует ли props такое поле 
+        //TODO проверить существует ли в props такое поле 
         $this->props[$name] = true;
         $this->$name = $value;
     }
