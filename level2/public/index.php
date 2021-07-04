@@ -1,15 +1,24 @@
 <?php
+session_start();
 
 use app\models\{Product, User, Basket, DBModel};
-use app\engine\{Autoload, TwigRender, Render};
+use app\engine\{Autoload, TwigRender, Render, Request};
 
 include "../config/config.php";
 include ROOT . "/engine/Autoload.php";
+include ROOT . '/vendor/autoload.php';
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-$controllerName = $_GET['c'] ?: 'product';
-$actionName = $_GET['a'];
+$request = new Request();
+
+$controllerName = $request->getControllerName() ?: 'product';
+$actionName = $request->getActionName();
+
+//если бутет работать то коммент удалить
+// $url = explode('/', $_SERVER['REQUEST_URI']);
+// $controllerName = $url[1] ?: 'product';
+// $actionName = $url[2];
 
 $controllerClass = CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
 
@@ -24,9 +33,8 @@ if (class_exists($controllerClass)) {
 // $product->save();
 
 //WHERE
-$where = DBModel::getWhere('category_id', 2);
-$product = Product::getAll($where);
-var_dump($product);
+// $where = DBModel::getWhere('category_id', 2);
+// $product = Product::getAll($where);
 
 //INSERT GET
 $product = new Product('Книга', 1, 'book.png', 'Самая интересная книга', 454);

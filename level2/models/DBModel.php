@@ -4,46 +4,45 @@ namespace app\models;
 
 use app\engine\Db;
 
-abstract class DBModel extends Model {
-
+abstract class DBModel extends Model
+{
     abstract protected static function getTableName();
 
     public static function getLimit($limit)
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
-        
+
         return Db::getInstance()->queryLimit($sql, $limit);
     }
 
-    public static function getWhere($column, $value)
+    public static  function getOneWhere($name, $value)
     {
-        $sql = " WHERE `{$column}` = {$value}";
-        return $sql;
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM `{$tableName}` WHERE `{$name}` = :value";
+        return DB::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
     }
-
-    // public function where($column, $value)
-    // {
-    //     $this->wheres[] = [
-    //         'column' => $column,
-    //         'value' => $value,
-    //     ];
-    //     return $this;
-    // }
-
-    // public function andWhere($column, $value)
-    // {
-    //     return $this->where($column, $value);
-    // }
 
     public static function getCount()
     {
-        //получить кол-во
     }
 
-    public static function getSumm()
+    public static function getCountWhere($name, $value)
     {
-        //получить сумму
+        $tableName = static::getTableName();
+        $sql = "SELECT COUNT(id) as count FROM {$tableName} WHERE `{$name}`=:value";
+        return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
+    }
+
+
+    public static function getSumWhere($name, $value)
+    {
+        $tableName = static::getTableName();
+        $sql = "SELECT SUM(price) as sum FROM {$tableName} WHERE `{$name}` = ':value'";
+        //var_dump(DB::getInstance()->queryAll($sql, ['session_id' => $session_id]));
+        //var_dump(DB::getInstance()->queryOneObject($sql, ['session_id' => $session_id], static::class));
+        return DB::getInstance()->queryAll($sql, ['value' => $value]);
+        // return DB::getInstance()->queryOneObject($sql, ['session_id' => $session_id], static::class);
     }
 
     public static function getJoin()
@@ -58,13 +57,12 @@ abstract class DBModel extends Model {
 
         return DB::getInstance()->queryOneObject($sql, ['id' => $id], static::class);
     }
-    public static function getAll($where = null)
+
+    public static function getAll()
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        if($where != null){
-            $sql .= $where;
-        }
+
         return DB::getInstance()->queryAll($sql);
     }
 
@@ -86,6 +84,7 @@ abstract class DBModel extends Model {
 
         DB::getInstance()->execute($sql, $params);
         $this->id = DB::getInstance()->lastInsertId();
+
         return $this;
     }
 
@@ -95,7 +94,7 @@ abstract class DBModel extends Model {
         $columns = [];
 
         foreach ($this->props as $key => $value) {
-            if(!$value) continue;
+            if (!$value) continue;
             $params["{$key}"] = $this->$key;
             $columns[] .= "`{$key}` = :{$key}";
             $this->props[$key] = false;
@@ -105,7 +104,7 @@ abstract class DBModel extends Model {
         $tableName = static::getTableName();
         $params['id'] = $this->id;
         $sql = "UPDATE `{$tableName}` SET {$columns} WHERE id = :id";
-        var_dump($sql);
+
         return DB::getInstance()->execute($sql, $params);
     }
 
@@ -119,7 +118,8 @@ abstract class DBModel extends Model {
 
     public function save()
     {
-        if (is_null($this->id)){
+
+        if (is_null($this->id)) {
             return $this->insert();
         } else {
             return $this->update();

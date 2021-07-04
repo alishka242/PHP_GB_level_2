@@ -2,9 +2,9 @@
 
 namespace app\controllers;
 
-use app\engine\Render;
-use app\engine\TwigRender;
 use app\interfaces\IRenderer;
+use app\models\Basket;
+use app\models\User;
 
 abstract class Controller
 {
@@ -12,12 +12,12 @@ abstract class Controller
     private $defaultAction = 'index';
     private $layout = 'main';
     private $useLayout = true;
- 
+
     private $render;
 
     public function __construct(IRenderer $render)
     {
-        $this->render = new Render($render);
+        $this->render = $render;
     }
 
     public function runAction($action)
@@ -34,12 +34,26 @@ abstract class Controller
     protected function render($template, $params = [])
     {
         if ($this->useLayout) {
-            return $this->renderTemplate("layouts/{$this->layout}", [
-                'header' => $this->renderTemplate('header', $params),
-                'menu' => $this->renderTemplate('menu', $params),
-                'content' => $this->renderTemplate($template, $params),
-                'footer' => $this->renderTemplate('footer', $params)
-            ]);
+            return $this->renderTemplate(
+                "layouts/{$this->layout}",
+                [
+                    'header' => $this->renderTemplate(
+                        'header',
+                        [
+                            'isAuth' => User::isAuth(),
+                            'userName' => User::getName(),
+                        ]
+                    ),
+                    'menu' => $this->renderTemplate(
+                        'menu',
+                        [
+                            'count' => Basket::getCountWhere('session_id', session_id())
+                        ]
+                    ),
+                    'content' => $this->renderTemplate($template, $params),
+                    'footer' => $this->renderTemplate('footer', $params)
+                ]
+            );
         } else {
             return $this->renderTemplate($template, $params);
         }
