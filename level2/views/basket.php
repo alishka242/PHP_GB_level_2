@@ -3,7 +3,7 @@
     <div>
         <?php foreach ($basket as $key => $value) : ?>
             <?php if ($value['count'] > 0) : ?>
-                <div class="basketItem">
+                <div class="basketItem" id="<?= $value['basket_id'] ?>">
                     <img src="/img/catalog/<?= $value['img_name'] ?>" width="50" alt="img">
                     <div class="basketItemInfo">
 
@@ -18,14 +18,14 @@
                             <a href="/basket/countUp/?id=<?= $value['product_id'] ?>">[+]</a>
                         </p>
                     </div>
-                    <a href="/basket/delete/?id=<?= $value['product_id'] ?>">[X]</a>
+                    <button data-id="<?= $value['basket_id'] ?>" class="delete">Удалить</button>
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
     <?php if (!empty($basket)) : ?>
         <div>
-            <h3>Сумма заказа: <?= $sum ?> руб.</h3>
+            <h3>Сумма заказа: <span id="sum"><?= $sum ?></span> руб.</h3>
 
             <a class="order-button" href="/basket/order/<?= $params['sum'] ?>">
                 <h3>Перейти к оформлению</h3>
@@ -35,3 +35,29 @@
     <?php endif; ?>
     </div>
 </div>
+
+<script>
+    let buttons = document.querySelectorAll('.delete');
+    buttons.forEach(elem => {
+        elem.addEventListener('click', () => {
+            let id = elem.getAttribute('data-id');
+            (
+                async () => {
+                    const response = await fetch('/basket/delete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({
+                            id: id
+                        })
+                    });
+                    const answer = await response.json();
+                    document.getElementById('count').innerText = answer.count;
+                    document.getElementById('sum').innerText = answer.sum;
+                    document.getElementById(id).remove();
+                }
+            )();
+        })
+    });
+</script>

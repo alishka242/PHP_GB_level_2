@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\User;
 use app\engine\Request;
+use app\engine\Session;
 
 class AuthController extends Controller
 {
@@ -22,8 +23,9 @@ class AuthController extends Controller
 //auth/register
     public function actionLogout()
     {
-        session_regenerate_id();
-        session_destroy();
+        $session = new Session();
+        ($session)->regenerate();
+        ($session)->destroy();
         header("Location: " . $_SERVER['HTTP_REFERER']);
         die();
     }

@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\engine\Session;
+
 class User extends DBModel
 {
     protected $id;
@@ -24,8 +26,8 @@ class User extends DBModel
     public static function auth($login, $pass)
     {
         $user = User::getOneWhere('login', $login);
-        if ($pass == $user->pass && $user != null){
-            $_SESSION['login'] = $login;
+        if (password_verify($pass, $user->pass) && $user != null){
+            (new Session())->set('login', $login);
             return true;    
         }
         return true;
@@ -33,17 +35,20 @@ class User extends DBModel
 
     public static function isAuth()
     {
-        return isset($_SESSION['login']);
+        $session = (new Session())->get('login');
+        return isset($session);
     }
 
     public static function isAdmin()
     {
-        return $_SESSION['login'] == 'admin';
+        $session = (new Session())->get('login');
+        return $session == 'admin';
     }
 
     public static function getName()
     {
-        return $_SESSION['login'];
+        $session = (new Session())->get('login');
+        return $session;
     }
 
     public static function getTableName()

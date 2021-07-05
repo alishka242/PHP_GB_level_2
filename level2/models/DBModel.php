@@ -19,7 +19,6 @@ abstract class DBModel extends Model
     public static  function getOneWhere($name, $value)
     {
         $tableName = static::getTableName();
-        var_dump($tableName);
         $sql = "SELECT * FROM `{$tableName}` WHERE `{$name}` = :value";
         return DB::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
     }
@@ -34,12 +33,6 @@ abstract class DBModel extends Model
     public static function getSumWhere($name, $value)
     {
         $tableName = static::getTableName();
-        //тут не выводится сумма 
-        // $userName = User::getName();
-        // if ($userName) {
-        //     $sql = "SELECT SUM(price) as sum FROM {$tableName} WHERE `{$name}` = :value AND `user_id` = (SELECT id FROM users WHERE `login` = :name)";
-        //     return DB::getInstance()->queryOne($sql, ['value' => "{$value}", 'name' => "{$userName}"])['sum'];
-        // }
         $sql = "SELECT SUM(price) as sum FROM {$tableName} WHERE `{$name}` = :value";
         return DB::getInstance()->queryOne($sql, ['value' => "{$value}"])['sum'];
     }
@@ -83,8 +76,6 @@ abstract class DBModel extends Model
 
         DB::getInstance()->execute($sql, $params);
         $this->id = DB::getInstance()->lastInsertId();
-
-        return $this;
     }
 
     protected function update()
@@ -104,7 +95,7 @@ abstract class DBModel extends Model
         $params['id'] = $this->id;
         $sql = "UPDATE `{$tableName}` SET {$columns} WHERE id = :id";
 
-        return DB::getInstance()->execute($sql, $params);
+        DB::getInstance()->execute($sql, $params);
     }
 
     public function delete()
@@ -112,16 +103,16 @@ abstract class DBModel extends Model
         $tableName = static::getTableName();
         $sql = "DELETE FROM `{$tableName}` WHERE id = :id";
 
-        return Db::getInstance()->execute($sql, ['id' => $this->id]);
+        Db::getInstance()->execute($sql, ['id' => $this->id]);
     }
 
     public function save()
     {
 
         if (is_null($this->id)) {
-            return $this->insert();
+            $this->insert();
         } else {
-            return $this->update();
+            $this->update();
         }
     }
 }

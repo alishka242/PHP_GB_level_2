@@ -9,6 +9,9 @@ include ROOT . "/engine/Autoload.php";
 include ROOT . '/vendor/autoload.php';
 
 spl_autoload_register([new Autoload(), 'loadClass']);
+// var_dump(password_hash("123", PASSWORD_DEFAULT));
+// var_dump(password_hash("321", PASSWORD_DEFAULT));
+
 
 $request = new Request();
 

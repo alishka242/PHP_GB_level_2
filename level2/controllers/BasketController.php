@@ -4,14 +4,16 @@ namespace app\controllers;
 
 use app\models\Basket;
 use app\engine\Request;
+use app\engine\Session;
 use app\models\User;
 
 class BasketController extends Controller
 {
     public function actionIndex()
     {
-        $basket = Basket::getBasket(session_id());
-        $sum = Basket::getSumWhere('session_id', session_id());
+        $session_id = (new Session())->getId();
+        $basket = Basket::getBasket($session_id);
+        $sum = Basket::getSumWhere('session_id', $session_id);
 
         echo $this->render(
             'basket',
@@ -32,18 +34,41 @@ class BasketController extends Controller
         //     $user_name = User::getName();
         //     $user_id = User::getOneWhere('login', $user_name)['id'];
         // }
-
-        $session_id = session_id();
+        $session_id = (new Session)->getId();
 
         (new Basket($session_id, $product_id, $price))->save();
 
         $response = [
             'success' => 'ok',
-            'count' => Basket::getCountWhere('session_id', session_id())
+            'count' => Basket::getCountWhere('session_id', $session_id)
         ];
 
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         die();
+    }
+
+    public function actionDelete()
+    {
+        $error = "ok";
+        $id = (new Request())->getParams()['id'];
+        $session_id = (new Session())->getId();
+        $basket = Basket::getOne($id);
+
+        if ($session_id == $basket->session_id){
+            $basket->delete();
+        } else {
+            $error = 'error';
+        }
+        
+        $response = [
+            'succes' => $error,
+            'count' => Basket::getCountWhere('session_id', $session_id),
+            'sum' => Basket::getSumWhere('session_id', $session_id),
+        ];
+
+        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        // header("Location: /basket");
+        // die();
     }
 
     public function actionCountDown()
@@ -58,14 +83,6 @@ class BasketController extends Controller
         $id = $_GET['id'];
         $this->basket->save();
         var_dump($_GET);
-        die();
-    }
-    public function actionDelete()
-    {
-        $product_id = $_GET['id'];
-        $basket = Basket::getBasket(session_id());
-        $basket->delete();
-        header("Location: /basket");
         die();
     }
 }
