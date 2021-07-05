@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Basket;
+use app\engine\Request;
+use app\models\User;
 
 class BasketController extends Controller
 {
@@ -10,6 +12,7 @@ class BasketController extends Controller
     {
         $basket = Basket::getBasket(session_id());
         $sum = Basket::getSumWhere('session_id', session_id());
+
         echo $this->render(
             'basket',
             [
@@ -21,17 +24,19 @@ class BasketController extends Controller
 
     public function actionAdd()
     {
-        $data = json_decode(file_get_contents('php://input'));
-        $product_id = $data->id;
-        $price = $data->id;
+        $request = new Request();
+        $product_id = $request->getParams()['id'];
+        $price = $request->getParams()['price'];
+        // $user_name = null;
+        // if (User::isAuth()){
+        //     $user_name = User::getName();
+        //     $user_id = User::getOneWhere('login', $user_name)['id'];
+        // }
 
         $session_id = session_id();
-        //$product_id = $_POST['id'];
-        //$price = $_POST['price'];
 
         (new Basket($session_id, $product_id, $price))->save();
-        // header("Location: " . $_SERVER['HTTP_REFERER']);
-        // die();
+
         $response = [
             'success' => 'ok',
             'count' => Basket::getCountWhere('session_id', session_id())

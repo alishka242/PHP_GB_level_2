@@ -54,12 +54,12 @@ class Db
     {
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute($params);
+
         return $stmt;
     }
 
     public function queryLimit($sql, $limit)
     {
-        //LIMIT 0, $limit
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue(1, $limit, \PDO::PARAM_INT);
         $stmt->execute();

@@ -15,11 +15,6 @@ $request = new Request();
 $controllerName = $request->getControllerName() ?: 'product';
 $actionName = $request->getActionName();
 
-//если бутет работать то коммент удалить
-// $url = explode('/', $_SERVER['REQUEST_URI']);
-// $controllerName = $url[1] ?: 'product';
-// $actionName = $url[2];
-
 $controllerClass = CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
 
 if (class_exists($controllerClass)) {

@@ -19,12 +19,9 @@ abstract class DBModel extends Model
     public static  function getOneWhere($name, $value)
     {
         $tableName = static::getTableName();
+        var_dump($tableName);
         $sql = "SELECT * FROM `{$tableName}` WHERE `{$name}` = :value";
         return DB::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
-    }
-
-    public static function getCount()
-    {
     }
 
     public static function getCountWhere($name, $value)
@@ -34,15 +31,17 @@ abstract class DBModel extends Model
         return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
     }
 
-
     public static function getSumWhere($name, $value)
     {
         $tableName = static::getTableName();
-        $sql = "SELECT SUM(price) as sum FROM {$tableName} WHERE `{$name}` = ':value'";
-        //var_dump(DB::getInstance()->queryAll($sql, ['session_id' => $session_id]));
-        //var_dump(DB::getInstance()->queryOneObject($sql, ['session_id' => $session_id], static::class));
-        return DB::getInstance()->queryAll($sql, ['value' => $value]);
-        // return DB::getInstance()->queryOneObject($sql, ['session_id' => $session_id], static::class);
+        //тут не выводится сумма 
+        // $userName = User::getName();
+        // if ($userName) {
+        //     $sql = "SELECT SUM(price) as sum FROM {$tableName} WHERE `{$name}` = :value AND `user_id` = (SELECT id FROM users WHERE `login` = :name)";
+        //     return DB::getInstance()->queryOne($sql, ['value' => "{$value}", 'name' => "{$userName}"])['sum'];
+        // }
+        $sql = "SELECT SUM(price) as sum FROM {$tableName} WHERE `{$name}` = :value";
+        return DB::getInstance()->queryOne($sql, ['value' => "{$value}"])['sum'];
     }
 
     public static function getJoin()

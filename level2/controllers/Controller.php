@@ -48,6 +48,7 @@ abstract class Controller
                         'menu',
                         [
                             'count' => Basket::getCountWhere('session_id', session_id())
+                            //можно добавить сессию и имя п-ля для использования в контенте
                         ]
                     ),
                     'content' => $this->renderTemplate($template, $params),
