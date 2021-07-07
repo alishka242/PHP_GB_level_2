@@ -2,18 +2,18 @@
 
 namespace app\controllers;
 
-use app\models\Basket;
+use app\models\entities\Basket;
 use app\engine\Request;
 use app\engine\Session;
-use app\models\User;
+use app\models\repositories\BasketRepository;
 
 class BasketController extends Controller
 {
     public function actionIndex()
     {
         $session_id = (new Session())->getId();
-        $basket = Basket::getBasket($session_id);
-        $sum = Basket::getSumWhere('session_id', $session_id);
+        $basket = (new BasketRepository())->getBasket($session_id);
+        $sum = (new BasketRepository())->getSumWhere('session_id', $session_id);
 
         echo $this->render(
             'basket',
@@ -29,18 +29,13 @@ class BasketController extends Controller
         $request = new Request();
         $product_id = $request->getParams()['id'];
         $price = $request->getParams()['price'];
-        // $user_name = null;
-        // if (User::isAuth()){
-        //     $user_name = User::getName();
-        //     $user_id = User::getOneWhere('login', $user_name)['id'];
-        // }
         $session_id = (new Session)->getId();
-
-        (new Basket($session_id, $product_id, $price))->save();
+        $basket = new Basket($session_id, $product_id, $price);
+        (new BasketRepository())->save($basket);
 
         $response = [
             'success' => 'ok',
-            'count' => Basket::getCountWhere('session_id', $session_id)
+            'count' => (new BasketRepository())->getCountWhere('session_id', $session_id)
         ];
 
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -49,40 +44,39 @@ class BasketController extends Controller
 
     public function actionDelete()
     {
-        $error = "ok";
         $id = (new Request())->getParams()['id'];
         $session_id = (new Session())->getId();
-        $basket = Basket::getOne($id);
+        $basket = (new BasketRepository())->getOne($id);
 
-        if ($session_id == $basket->session_id){
-            $basket->delete();
+        if ($session_id == $basket->session_id) {
+            (new BasketRepository())->delete($basket);
         } else {
             $error = 'error';
         }
-        
-        $response = [
-            'succes' => $error,
-            'count' => Basket::getCountWhere('session_id', $session_id),
-            'sum' => Basket::getSumWhere('session_id', $session_id),
-        ];
+
+        $response = (new BasketRepository())->returnResponse($session_id);
 
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        // header("Location: /basket");
-        // die();
     }
 
-    public function actionCountDown()
+    public function actionPlus()
     {
-        $id = $_GET['id'];
-        var_dump($_GET);
-        die();
+        $id = (new Request())->getParams()['id'];
+        $session_id = (new Session())->getId();
+        $basket = (new BasketRepository())->getOne($id);
+
+        if ($session_id == $basket->session_id) {
+            (new BasketRepository())->delete($basket);
+        } else {
+            $error = 'error';
+        }
     }
 
-    public function actionCountUp()
+    public function actionMinus()
     {
-        $id = $_GET['id'];
-        $this->basket->save();
-        var_dump($_GET);
-        die();
+        //        $id = $_GET['id'];
+        //        $this->basket->save();
+        //        var_dump($_GET);
+        //        die();
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\entities;
 
-class Order extends DBModel
+use app\models\Model;
+
+class Order extends Model
 {
     protected $id;
     protected $userName;
@@ -20,9 +22,4 @@ class Order extends DBModel
         'product_id' => false,
         'status' => false
     ];
-
-    public static function getTableName()
-    {
-        return 'orders';
-    }
 }

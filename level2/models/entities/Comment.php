@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\entities;
 
-class Comments extends DBModel
+use app\models\Model;
+
+class Comment extends Model
 {
     protected $id;
     protected $user_id;
@@ -12,9 +14,4 @@ class Comments extends DBModel
         'user_id' => false,
         'text' => false
     ];
-
-    public static function getTableName()
-    {
-        return 'comments';
-    }
 }

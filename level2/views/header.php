@@ -1,17 +1,16 @@
 <p>SHOP SM</p>
 <?php if ($isAuth) : ?>
-    <div>
+    <div class="singInOrReg">
         <h3><?= $params['userName'] ?></h3>
-        <a href="/auth/logout">[Выход]</a>
+        <a href="/auth/logout">Выход</a>
     </div>
 <?php else : ?>
-    <form action="/auth/login/" method="post">
-        <input type="text" name="login" placeholder="Логин">
-        <input type="text" name="pass" placeholder="Пароль">
-        <input type="submit" name="submit" value="Войти">
-    </form>
-    <!-- <div class="singInOrReg">
-        <a href="/sing_in">Войти</a> 
+    <div class="singInOrReg">
+        <form action="/auth/login/" method="post">
+            <input type="text" name="login" placeholder="Логин" class="headerFormInput">
+            <input type="text" name="pass" placeholder="Пароль" class="headerFormInput">
+            <input type="submit" name="submit" value="Войти" class="headerFormInput headerFormBasket">
+        </form>
         <a href="/registration">Зарегистрироваться</a>
-    </div> -->
+    </div>
 <?php endif; ?>

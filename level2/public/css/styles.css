@@ -46,9 +46,26 @@ html {
     padding: 5px 15px;
 }
 
+.headerFormInput {
+    padding: 4px;
+    border: 1px solid #cdc5b1;
+    background-color: rgb(36, 36, 36);
+    color: #cdc5b1;
+    font: 16PX "Times New Roman";
+}
+
+.headerFormInput:focus-visible {
+    outline: none;
+}
+
+.headerFormBasket:hover {
+    color: rgb(138, 138, 138);
+    background-color: white;
+}
+
 .singInOrReg a {
-    padding: 5px;
-    margin: 10px;
+    padding: 4px;
+    margin-left: 5px;
     border: 1px solid #cdc5b1;
 }
 
@@ -158,7 +175,7 @@ main {
     text-align: center;
     margin: 10px;
     padding: 5px;
-    width: 200px;    
+    width: 200px;
 }
 
 .product {
@@ -289,6 +306,26 @@ main {
     background: rgb(224, 223, 210);
 }
 
+.plus,
+.minus {
+    width: 19px;
+}
+
+.plus:hover,
+.minus:hover {
+    color: #cdc5b1;
+    background-color: rgb(36, 36, 36);
+}
+
+.delete {
+    padding: 2px;
+}
+
+.delete:hover {
+    color: #cdc5b1;
+    background-color: rgb(36, 36, 36);
+}
+
 .order {
     border: 1px solid black;
     padding: 15px;
@@ -305,27 +342,27 @@ main {
     /* justify-content: space-around; */
 }
 
-.orderForm input{
+.orderForm input {
     margin-bottom: 20px;
     margin-top: 5px;
 }
 
-.ordersAdmin{
-background-color: rgb(235, 227, 207);
-padding: 15px;
+.ordersAdmin {
+    background-color: rgb(235, 227, 207);
+    padding: 15px;
 }
 
-.orderInfoAdmin{
+.orderInfoAdmin {
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid rgb(168, 168, 168);
 }
 
-.orderStatus{
+.orderStatus {
     background-color: greenyellow;
 }
 
-.orderSess{
+.orderSess {
     background-color: indianred;
 }
 
