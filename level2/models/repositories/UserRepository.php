@@ -8,10 +8,26 @@ use app\models\entities\User;
 
 class UserRepository extends Repository
 {
+    public function registration($login, $pass)
+    {
+        $pass = password_hash($pass, PASSWORD_DEFAULT);
+        $user = new User($login, $pass);
+        (new UserRepository())->save($user);
+        return 'Вы успешно зарегистрировались!';
+    }
+
+    public function userExist($login)
+    {
+        $user = $this->getOneWhere('login', $login);
+        if ($user) {
+            return 'Вы уже зарегистрованны!';
+        }
+    }
+
     public function auth($login, $pass)
     {
         $user = $this->getOneWhere('login', $login);
-        if (password_verify($pass, $user->pass) && $user != null){
+        if (password_verify($pass, $user->pass) && $user != null) {
             (new Session())->set('login', $login);
             return true;
         }

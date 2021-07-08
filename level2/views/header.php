@@ -6,11 +6,7 @@
     </div>
 <?php else : ?>
     <div class="singInOrReg">
-        <form action="/auth/login/" method="post">
-            <input type="text" name="login" placeholder="Логин" class="headerFormInput">
-            <input type="text" name="pass" placeholder="Пароль" class="headerFormInput">
-            <input type="submit" name="submit" value="Войти" class="headerFormInput headerFormBasket">
-        </form>
-        <a href="/registration">Зарегистрироваться</a>
+        <a href="/auth/singIn">Войти</a>
+        <a href="/auth/formRegistration">Зарегистрироваться</a>
     </div>
 <?php endif; ?>
