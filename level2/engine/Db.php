@@ -2,22 +2,20 @@
 
 namespace app\engine;
 
-use app\traits\TSinletone;
-
 class Db
 {
-    private $config = [
-        'driver' => 'mysql',
-        'host' => 'localhost:3306',
-        'login' => 'root',
-        'password' => 'Not.8fat',
-        'database' => 'wild_shop',
-        'charset' => 'utf8'
-    ];
-
-    use TSinletone;
-
+    private $config;
     protected $connection = null;
+
+    public function __construct($driver = null, $host = null, $login = null, $password = null, $database = null, $charset = "utf8")
+    {
+        $this->config['driver'] = $driver;
+        $this->config['host'] = $host;
+        $this->config['login'] = $login;
+        $this->config['password'] = $password;
+        $this->config['database'] = $database;
+        $this->config['charset'] = $charset;
+    }
 
     protected function getConnection()
     {
@@ -63,7 +61,7 @@ class Db
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue(1, $limit, \PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(); 
+        return $stmt->fetchAll();
     }
 
     public function queryOneObject($sql, $params, $class)

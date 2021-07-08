@@ -5,12 +5,13 @@ namespace app\controllers;
 use app\models\repositories\UserRepository;
 use app\engine\Request;
 use app\engine\Session;
+use app\engine\App;
 
 class AuthController extends Controller
 {
     public function actionSingIn()
     {
-        if ((new UserRepository())->isAuth()) {
+        if (App::call()->userRepository->isAuth()) {
             echo $this->render(
                 'sing_in',
                 [
@@ -25,10 +26,10 @@ class AuthController extends Controller
 
     public function actionLogin()
     {
-        $request = new Request();
-        $login = $request->getParams()['login'];
-        $pass = $request->getParams()['pass'];
-        if ((new UserRepository())->auth($login, $pass)) {
+        $login = App::call()->request->getParams()['login'];
+        $pass = App::call()->request->getParams()['pass'];
+        
+        if (App::call()->userRepository->auth($login, $pass)) {
             header("Location: " . $_SERVER['HTTP_REFERER']);
             die();
         } else {
@@ -38,9 +39,8 @@ class AuthController extends Controller
 
     public function actionLogout()
     {
-        $session = new Session();
-        $session->regenerate();
-        $session->destroy();
+        App::call()->session->regenerate();
+        App::call()->session->destroy();
         header("Location: " . $_SERVER['HTTP_REFERER']);
         die();
     }
@@ -57,15 +57,14 @@ class AuthController extends Controller
 
     public function actionRegistration()
     {
-        $request = new Request();
-        $login = $request->getParams()['login'];
-        $pass = $request->getParams()['pass'];
-        $userExist = (new UserRepository())->userExist($login);
+        $login = App::call()->request->getParams()['login'];
+        $pass = App::call()->request->getParams()['pass'];
+        $userExist = App::call()->userRepository->userExist($login);
         if ($login != null && $pass != null) {
             if ($userExist) {
                 $this->actionFormRegistration($userExist);
             } else {
-                $message = (new UserRepository())->registration($login, $pass);
+                $message = App::call()->userRepository->registration($login, $pass);
                 $this->actionFormRegistration($message);
             }
         }

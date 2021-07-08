@@ -3,8 +3,7 @@
 namespace app\controllers;
 
 use app\interfaces\IRenderer;
-use app\models\repositories\BasketRepository;
-use app\models\repositories\UserRepository;
+use app\engine\App;
 
 abstract class Controller
 {
@@ -12,7 +11,6 @@ abstract class Controller
     private $defaultAction = 'index';
     private $layout = 'main';
     private $useLayout = true;
-
     private $render;
 
     public function __construct(IRenderer $render)
@@ -40,14 +38,14 @@ abstract class Controller
                     'header' => $this->renderTemplate(
                         'header',
                         [
-                            'isAuth' => (new UserRepository())->isAuth(),
-                            'userName' => (new UserRepository())->getName(),
+                            'isAuth' => App::call()->userRepository->isAuth(),
+                            'userName' => App::call()->userRepository->getName(),
                         ]
                     ),
                     'menu' => $this->renderTemplate(
                         'menu',
                         [
-                            'count' => (new BasketRepository())->getCountWhere('session_id', session_id())
+                            'count' => App::call()->basketRepository->getCountWhere('session_id', session_id())
                             //можно добавить сессию и имя п-ля для использования в контенте
                         ]
                     ),

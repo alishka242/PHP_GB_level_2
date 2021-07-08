@@ -2,9 +2,9 @@
 
 namespace app\models\repositories;
 
-use app\engine\Db;
 use app\models\entities\Basket;
 use app\models\Repository;
+use app\engine\App;
 
 class BasketRepository extends Repository
 {
@@ -12,7 +12,7 @@ class BasketRepository extends Repository
     {
         $sql = "SELECT b.id as basket_id, b.product_id AS product_id, b.price AS price, b.`count` AS `count`, p.name AS product_name, p.img_name AS img_name FROM basket AS b, products AS p WHERE (b.`session_id` = '{$session_id}' OR b.`user_id` = 'user_id') AND b.product_id = p.id";
 
-        return Db::getInstance()->queryAll($sql);
+        return App::call()->db->queryAll($sql);
     }
 
     public function getEntityClass()

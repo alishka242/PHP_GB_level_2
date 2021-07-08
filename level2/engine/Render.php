@@ -3,6 +3,7 @@
 namespace app\engine;
 
 use app\interfaces\IRenderer;
+use app\engine\App;
 
 class Render implements IRenderer
 {
@@ -10,7 +11,7 @@ class Render implements IRenderer
     {
         ob_start();
         extract($params);
-        $templatePath = VIEWS_DIR . $template . '.php';
+        $templatePath = App::call()->config['views_dir'] . $template . '.php';
         if (file_exists($templatePath)) {
             include $templatePath;
             return ob_get_clean();
