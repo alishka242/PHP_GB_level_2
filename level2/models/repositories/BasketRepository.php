@@ -25,7 +25,7 @@ class BasketRepository extends Repository
         return 'basket';
     }
 
-    public function returnResponse($session_id)
+    public function returnResponse($session_id, $productCount)
     {
         $error = "ok";
 
@@ -35,6 +35,7 @@ class BasketRepository extends Repository
             $response = [
                 'succes' => $error,
                 'count' => $this->getCountWhere('session_id', $session_id),
+                'productCount' => $productCount,
                 'sum' => $sum,
             ];
         } else {

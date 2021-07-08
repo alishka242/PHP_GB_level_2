@@ -24,16 +24,31 @@ abstract class Repository
         return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
     }
 
+    public function getProductCountWhere($id)
+    {
+        $tableName = $this->getTableName();
+        $sql = "SELECT count as productCount FROM {$tableName} WHERE `id`=:id";
+        return Db::getInstance()->queryOne($sql, ['id' => $id])['productCount'];
+    }
+
     public function getSumWhere($name, $value)
     {
         $tableName = $this->getTableName();
-        $sql = "SELECT SUM(price) as sum FROM {$tableName} WHERE `{$name}` = :value";
+        $sql = "SELECT SUM(price * count) as sum FROM {$tableName} WHERE `{$name}` = :value";
         return DB::getInstance()->queryOne($sql, ['value' => "{$value}"])['sum'];
     }
 
     public function getJoin()
     {
         # code...
+    }
+
+    public function getOne($id)
+    {
+        $tableName = $this->getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE id = :id";
+
+        return DB::getInstance()->queryOneObject($sql, ['id' => $id], $this->getEntityClass());
     }
 
     public function getOneWhere($name, $value)
@@ -43,12 +58,11 @@ abstract class Repository
         return DB::getInstance()->queryOneObject($sql, ['value' => $value], $this->getEntityClass());
     }
 
-    public function getOne($id)
+    public function getOneWhereAnd($name_1, $value_1, $name_2, $value_2)
     {
         $tableName = $this->getTableName();
-        $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-
-        return DB::getInstance()->queryOneObject($sql, ['id' => $id], $this->getEntityClass());
+        $sql = "SELECT * FROM `{$tableName}` WHERE `{$name_1}` = :value_1 AND `{$name_2}` = :value_2";
+        return DB::getInstance()->queryOneObject($sql, ['value_1' => $value_1, 'value_2' => $value_2], $this->getEntityClass());
     }
 
     public function getAll()
@@ -95,7 +109,6 @@ abstract class Repository
         $tableName = $this->getTableName();
         $params['id'] = $this->id;
         $sql = "UPDATE `{$tableName}` SET {$columns} WHERE id = :id";
-
         DB::getInstance()->execute($sql, $params);
     }
 
@@ -103,6 +116,22 @@ abstract class Repository
     {
         $tableName = $this->getTableName();
         $sql = "DELETE FROM `{$tableName}` WHERE id = :id";
+
+        Db::getInstance()->execute($sql, ['id' => $entity->id]);
+    }
+
+    public function plus(Model $entity)
+    {
+        $tableName = $this->getTableName();
+        $sql = "UPDATE `{$tableName}` SET `count` = `count` + 1 WHERE id = :id";
+
+        Db::getInstance()->execute($sql, ['id' => $entity->id]);
+    }
+
+    public function minus(Model $entity)
+    {
+        $tableName = $this->getTableName();
+        $sql = "UPDATE `{$tableName}` SET `count` = `count` - 1 WHERE id = :id";
 
         Db::getInstance()->execute($sql, ['id' => $entity->id]);
     }

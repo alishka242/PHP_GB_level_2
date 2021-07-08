@@ -47,11 +47,12 @@ html {
 }
 
 .headerFormInput {
-    padding: 4px;
+    padding: 3px 4px;
     border: 1px solid #cdc5b1;
-    background-color: rgb(36, 36, 36);
+    border-radius: 5px;
+    background-color: rgb(85, 85, 85);
     color: #cdc5b1;
-    font: 16PX "Times New Roman";
+    font: 15px "Times New Roman";
 }
 
 .headerFormInput:focus-visible {
@@ -64,8 +65,11 @@ html {
 }
 
 .singInOrReg a {
-    padding: 4px;
+    padding: 2px 4px;
     margin-left: 5px;
+    border-radius: 5px;
+    background-color: rgb(85, 85, 85);
+    color: #cdc5b1;
     border: 1px solid #cdc5b1;
 }
 

@@ -31,8 +31,17 @@ class BasketController extends Controller
         $price = $request->getParams()['price'];
         $session_id = (new Session)->getId();
         $basket = new Basket($session_id, $product_id, $price);
-        (new BasketRepository())->save($basket);
-
+        if ($session_id == $basket->session_id) {
+            // $productBasket = (new BasketRepository())->getOneWhereAnd('session_id', $session_id, 'product_id', $product_id);
+            // if ($productBasket->id) {
+            //     $productBasket->count = $productBasket->count + 1;
+            //     (new BasketRepository())->save($productBasket);
+            // } else {
+            (new BasketRepository())->save($basket);
+            // }
+        } else {
+            $error = 'error';
+        }
         $response = [
             'success' => 'ok',
             'count' => (new BasketRepository())->getCountWhere('session_id', $session_id)
@@ -54,8 +63,29 @@ class BasketController extends Controller
             $error = 'error';
         }
 
-        $response = (new BasketRepository())->returnResponse($session_id);
+        $response = (new BasketRepository())->returnResponse($session_id, $id);
 
+        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
+
+    public function actionMinus()
+    {
+        $id = (new Request())->getParams()['id'];
+        $session_id = (new Session())->getId();
+        $basket = (new BasketRepository())->getOne($id);
+
+        if ($session_id == $basket->session_id) {
+            (new BasketRepository())->minus($basket);
+        } else {
+            $error = 'error';
+        }
+
+        $productCount = (new BasketRepository())->getProductCountWhere($id);
+        if ($productCount == 0) {
+            (new BasketRepository())->delete($basket);
+        }
+
+        $response = (new BasketRepository())->returnResponse($session_id, $productCount);
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
@@ -66,17 +96,12 @@ class BasketController extends Controller
         $basket = (new BasketRepository())->getOne($id);
 
         if ($session_id == $basket->session_id) {
-            (new BasketRepository())->delete($basket);
+            (new BasketRepository())->plus($basket);
         } else {
             $error = 'error';
         }
-    }
-
-    public function actionMinus()
-    {
-        //        $id = $_GET['id'];
-        //        $this->basket->save();
-        //        var_dump($_GET);
-        //        die();
+        $productCount = (new BasketRepository())->getProductCountWhere($id);
+        $response = (new BasketRepository())->returnResponse($session_id, $productCount);
+        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 }
