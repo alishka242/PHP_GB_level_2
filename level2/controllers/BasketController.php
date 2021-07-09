@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\entities\Basket;
-
 use app\models\repositories\BasketRepository;
 use app\engine\App;
 
@@ -37,7 +36,7 @@ class BasketController extends Controller
             //     $productBasket->count = $productBasket->count + 1;
             //     (new BasketRepository())->save($productBasket);
             // } else {
-                App::call()->basketRepository->save($basket);
+            App::call()->basketRepository->save($basket);
             // }
         } else {
             $error = 'error';

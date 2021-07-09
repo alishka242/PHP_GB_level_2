@@ -27,7 +27,7 @@
         <div>
             <h3>Сумма заказа: <span id="sum"><?= $sum ?></span> руб.</h3>
 
-            <a class="order-button" href="/basket/order/<?= $params['sum'] ?>">
+            <a class="order-button" href="/order/order/<?= $params['sum'] ?>">
                 <h3>Перейти к оформлению</h3>
             </a>
         <?php else : ?>

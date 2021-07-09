@@ -12,6 +12,7 @@ use app\traits\TSinletone;
  * Class App
  * @property Request $request
  * @property BasketRepository $basketRepository
+ * @property OrderRepository $orderRepository
  * @property UserRepository $userRepository
  * @property ProductRepository $productRepository
  * @property Session $session

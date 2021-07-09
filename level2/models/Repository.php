@@ -74,6 +74,14 @@ abstract class Repository
         return App::call()->db->queryAll($sql);
     }
 
+    public function getAllWhere($name, $value)
+    {
+        $tableName = $this->getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE `$name` = '$value'";
+
+        return App::call()->db->queryAll($sql);
+    }
+
     protected function insert(Model $entity)
     {
         $params = [];
@@ -91,6 +99,7 @@ abstract class Repository
         $sql = "INSERT INTO `{$tableName}` ({$columns}) VALUES ({$value})";
 
         App::call()->db->execute($sql, $params);
+        
         $entity->id = App::call()->db->lastInsertId();
     }
 

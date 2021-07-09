@@ -34,7 +34,7 @@ CREATE TABLE `basket` (
   KEY `product_id` (`product_id`),
   CONSTRAINT `basket_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `basket_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ CREATE TABLE `basket` (
 
 LOCK TABLES `basket` WRITE;
 /*!40000 ALTER TABLE `basket` DISABLE KEYS */;
+INSERT INTO `basket` VALUES (1,NULL,1,'nd71jgu9302fjlj0feg0atv39j5fohs6',1,12),(2,NULL,2,'nd71jgu9302fjlj0feg0atv39j5fohs6',1,24);
 /*!40000 ALTER TABLE `basket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,16 +163,18 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(145) NOT NULL,
-  `phone` int NOT NULL,
+  `phone` text NOT NULL,
   `email` text NOT NULL,
   `session_id` text NOT NULL,
   `product_id` bigint unsigned NOT NULL,
+  `count` int NOT NULL DEFAULT '1',
+  `price` decimal(10,0) NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `status` enum('новый','собран','отправлен','доставлен') DEFAULT 'новый',
   UNIQUE KEY `id` (`id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,6 +183,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,'Алина Евгеньевна Чуркина','+7(999)697-8942','alinochka24f1998@mail.ru','nd71jgu9302fjlj0feg0atv39j5fohs6',1,1,12,'2021-07-09 17:54:13','новый'),(2,'Алина Евгеньевна Чуркина','+7(999)697-8942','alinochka24f1998@mail.ru','nd71jgu9302fjlj0feg0atv39j5fohs6',2,1,24,'2021-07-09 17:54:13','новый');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +239,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Яблоко красное',2,'apple01.png','Яблоки – очень популярный и, пожалуй, наиболее распространенный в нашей стране фрукт. \nРегулярное их употребление помогает поддерживать необходимый уровень витаминов и минералов, важных для человеческого организма. \nВ них содержатся витамины С, В1, В2, Р, Е, каротин, калий, железо, марганец, кальций, пектины, сахара, органические кислоты и другие полезные вещества.',12,'2021-07-08 11:40:45'),(2,'Пиццa c пoмидopaми',4,'pizza01.png','Пиццa c пoмидopaми — пpocтaя и вкуcнaя. В ocнoвe ee клaccичecкиe итaльянcкиe peцeпты. Ингpeдиeнты:пoмидopы, cыp, зeлeнь и oливкoвoe мacлo.',24,'2021-07-08 11:40:45'),(3,'Чай черный с лимоном',3,'tea01.png','Байховый чай (от китайского бай хуа — «белый цветок», название едва распустившихся почек чайного листа, одного из компонентов чая, придающих ему аромат и вкус) — торговое название рассыпного чая, выработанного в виде отдельных чаинок.',10,'2021-07-08 11:40:45');
+INSERT INTO `products` VALUES (1,'Яблоко красное',2,'apple01.png','Яблоки – очень популярный и, пожалуй, наиболее распространенный в нашей стране фрукт. \nРегулярное их употребление помогает поддерживать необходимый уровень витаминов и минералов, важных для человеческого организма. \nВ них содержатся витамины С, В1, В2, Р, Е, каротин, калий, железо, марганец, кальций, пектины, сахара, органические кислоты и другие полезные вещества.',12,'2021-07-09 12:53:56'),(2,'Пиццa c пoмидopaми',4,'pizza01.png','Пиццa c пoмидopaми — пpocтaя и вкуcнaя. В ocнoвe ee клaccичecкиe итaльянcкиe peцeпты. Ингpeдиeнты:пoмидopы, cыp, зeлeнь и oливкoвoe мacлo.',24,'2021-07-09 12:53:56'),(3,'Чай черный с лимоном',3,'tea01.png','Байховый чай (от китайского бай хуа — «белый цветок», название едва распустившихся почек чайного листа, одного из компонентов чая, придающих ему аромат и вкус) — торговое название рассыпного чая, выработанного в виде отдельных чаинок.',10,'2021-07-09 12:53:56');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,4 +279,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-08 11:41:19
+-- Dump completed on 2021-07-09 12:56:16
