@@ -29,6 +29,29 @@ abstract class Controller
         }
     }
 
+    protected function getMenu()
+    {
+        $user = App::call()->userRepository->getName();
+        if ($user == 'admin') {
+            $menu = $this->renderTemplate(
+                'menuAdmin',
+                [
+                    'count' => App::call()->basketRepository->getCountWhere('session_id', session_id())
+                    //можно добавить сессию и имя п-ля для использования в контенте
+                ]
+            );
+        } else {
+            $menu = $this->renderTemplate(
+                'menu',
+                [
+                    'count' => App::call()->basketRepository->getCountWhere('session_id', session_id())
+                    //можно добавить сессию и имя п-ля для использования в контенте
+                ]
+            );
+        }
+        return $menu;
+    }
+
     protected function render($template, $params = [])
     {
         if ($this->useLayout) {
@@ -42,13 +65,7 @@ abstract class Controller
                             'userName' => App::call()->userRepository->getName(),
                         ]
                     ),
-                    'menu' => $this->renderTemplate(
-                        'menu',
-                        [
-                            'count' => App::call()->basketRepository->getCountWhere('session_id', session_id())
-                            //можно добавить сессию и имя п-ля для использования в контенте
-                        ]
-                    ),
+                    'menu' => $this->getMenu(),
                     'content' => $this->renderTemplate($template, $params),
                     'footer' => $this->renderTemplate('footer', $params)
                 ]
